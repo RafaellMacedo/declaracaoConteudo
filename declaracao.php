@@ -38,7 +38,6 @@ $mpdf->SetTitle("DECLARAÇÃO DE CONTEÚDO");
 $mpdf->SetDisplayMode('fullpage');
 $mpdf->AddPage('P');
 
-// $body = utf8_encode($body);
 $mpdf->WriteHTML($body);
 
 $nome_arquivo = "declaracao_conteudo.pdf";
@@ -92,7 +91,7 @@ function tableRemetenteDestinatario($remetente, $destinatario){
 	return $table;
 }
 
-function tableConteudo($item, $style){
+function tableConteudo($itens, $style){
 	$table = '<table id="table_conteudo" style="'.$style.' width: 100%; margin-top: 0.2%;">';
 	$table .= '<thead>';
 	$table .= '<tr>';
@@ -111,17 +110,20 @@ function tableConteudo($item, $style){
 	$total_qtde  = 0;
 	$total_preco = 0;
 
-	// foreach ($dados_item as $key => $dados) {
+	/* TODO Pode ser criado uma tabela no arquivo index.php 
+	*depois usar o laço abaixo para gerar uma lista de itens da postagem
+	*/ 
+	// foreach ($itens as $item => $dados) {
 		$table .= '<tr>';
 		$table .= '<td style=" text-align: center;'.$style.'">'.$i.'</td>';
-		$table .= '<td style=" text-align: center;'.$style.'">'.$item['descricao'].'</td>';
-		$table .= '<td style=" text-align: center;'.$style.'">'.$item['quantidade'].'</td>';
-		$table .= '<td style=" text-align: center;'.$style.'">R$ '.number_format($item['valor_total'], 2, ',','.').'</td>';
+		$table .= '<td style=" text-align: center;'.$style.'">'.$itens['descricao'].'</td>';
+		$table .= '<td style=" text-align: center;'.$style.'">'.$itens['quantidade'].'</td>';
+		$table .= '<td style=" text-align: center;'.$style.'">R$ '.number_format($itens['valor_total'], 2, ',','.').'</td>';
 		$table .= '</tr>';
 		$i++;
 
-		$total_qtde  += $item['quantidade'];
-		$total_preco += $item['valor_total'];
+		$total_qtde  += $itens['quantidade'];
+		$total_preco += $itens['valor_total'];
 	// }
 
 	$table .= '</tbody>';
@@ -132,10 +134,6 @@ function tableConteudo($item, $style){
 	$table .= '<td style="text-align: center;'.$style.'">R$ '.number_format($total_preco, 2, ',','.').'</td>';
 	$table .= '</tr>';
 
-	$table .= '<tr>';
-	// $table .= '<td colspan="2" style="text-align: right;'.$style.' background-color: #CDC9C9;"><b>PESO TOTAL (kg) </b></td>';
-	// $table .= '<td colspan="2" style="text-align: center;'.$style.'">'.number_format($dados_item[0]["peso"], 3, ',','.').'</td>';
-	$table .= '</tr>';
 	$table .= '</tbody>';
 
 	$table .= '</table>';
@@ -154,7 +152,7 @@ function tableDeclaracao($style){
 	$declaracao .= '<p style="padding-bottom: 1%; padding-right: 1%; ">Declaro ainda que não estou postando conteúdo inflamável, explosivo, causador de combustão
 	 espontánea, tôxico, corrosivo, gás ou qualquer outro conteúdo que constitua perigo, conforme o art. 13 da Lei Postal nº 6.538/78.</p>';
 	$declaracao .= '</div>';
-	$declaracao .= '<div>_Marília_, ______ de ______________________ de __'.date("Y").'__  ________________________________________________________</div>';
+	$declaracao .= '<div>_________, ______ de ______________________ de __'.date("Y").'__  ________________________________________________________</div>';
 	$declaracao .= '<div style="text-align: right; font-size: 70%; padding-right: 8%">Assinatura do Declarante/Remetente</div>';
 	$declaracao .= '</div>';
 	return $declaracao;
